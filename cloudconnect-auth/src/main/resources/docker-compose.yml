@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: cloudconnect-db
+    restart: always  # Ensures it restarts if the container crashes
+    ports:
+      - "5432:5432"  # Exposes PostgreSQL, restrict this in production
+    environment:
+      POSTGRES_USER: clouduser
+      POSTGRES_PASSWORD: cloudpassword
+      POSTGRES_DB: cloudconnect
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Persistent storage
+    networks:
+      - cloudconnect-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - "8080:80"  # Web UI for database management
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cloudconnect.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword
+    networks:
+      - cloudconnect-network
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:  # Named volume for persistent PostgreSQL storage
+
+networks:
+  cloudconnect-network:  # Internal network to isolate database
+    driver: bridge
