@@ -1,5 +1,6 @@
 package com.cloudconnect.auth.dto;
 
+import com.cloudconnect.auth.entity.RoleName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,5 +26,5 @@ public class SignUpRequestDto {
     private String password;
 
     // Users can have multiple roles
-    private Set<String> roles;
+    private Set<RoleName> roles;
 }
